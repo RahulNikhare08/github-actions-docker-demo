@@ -29,8 +29,8 @@ jobs:
 
         - name: Tag Image
           run: |
-            docker tag github-actions-demo:latest \ ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.ap-south-1.amazonaws.com/github-actions-demo:latest
+            docker tag github-actions-demo:latest  ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.ap-south-1.amazonaws.com/github-actions-demo:latest
 
         - name: Push Image
           run: |
-           docker push \ ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.ap-south-1.amazonaws.com/github-actions-demo:latest
+           docker push  ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.ap-south-1.amazonaws.com/github-actions-demo:latest
