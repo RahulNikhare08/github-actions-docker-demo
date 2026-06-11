@@ -50,3 +50,25 @@ jobs:
             chmod 600 ~/.ssh/id_rsa
 
             ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
+
+        - name: Deploy Container
+          run: |
+            ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << EOF
+
+            aws ecr get-login-password --region ap-south-1 | \
+            docker login --username AWS --password-stdin \
+            172571130712.dkr.ecr.ap-south-1.amazonaws.com
+
+            docker pull \
+            172571130712.dkr.ecr.ap-south-1.amazonaws.com/github-actions-demo:latest
+
+            docker stop demo-app || true
+
+            docker rm demo-app || true
+
+            docker run -d \
+            -p 80:5000 \
+            --name demo-app \
+            172571130712.dkr.ecr.ap-south-1.amazonaws.com/github-actions-demo:latest
+
+            EOF
