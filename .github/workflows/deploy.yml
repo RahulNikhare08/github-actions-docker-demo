@@ -34,3 +34,19 @@ jobs:
         - name: Push Image
           run: |
            docker push  ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.ap-south-1.amazonaws.com/github-actions-demo:latest
+
+    
+    deploy:
+        needs: build
+        runs-on: ubuntu-latest
+
+        steps:
+        - name: Setup SSH Key
+          run: |
+            mkdir -p ~/.ssh
+
+            echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa
+
+            chmod 600 ~/.ssh/id_rsa
+
+            ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
